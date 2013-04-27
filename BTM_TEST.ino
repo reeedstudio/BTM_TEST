@@ -173,6 +173,14 @@ void VOLtest(void)
     }
     Serial.println("\r\n******************************");
     
+    Serial.println("begin to adjust!!");
+    EEPM.setVolX(volX_t);
+    EEPM.setVolY(volY_t);
+    EEPM.setVolY_n(volY_n_t);
+    
+    EEPM.Adjust();
+    Serial.println("adjust over");
+    
 }
 
 
