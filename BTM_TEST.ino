@@ -92,12 +92,14 @@ void OHMtest(void)
 void VOLtest(void)
 {
     //Forward   TEST
-    unsigned char portc[7]  ={0x01,0x21,0x09,0x49,0x05,0x85,0x15};
-    float v[7]      ={37,1.2,1.5,3.6,3.7,13.4,13.5};
+    unsigned char portc[7]  =   {0x01,0x21,0x09,0x49,0x05,0x85,0x15};
+    float v[7]      =           {37,1.2,1.5,3.6,3.7,13.4,13.5};
     int n;
     dsb[3]=0x01;
     PORTA&=~0x80;
     
+    // negtive vol
+    Serial.println("Negative voltage: ");
     for(n=0;n<7;n++)
     {
         PORTC=portc[n];
@@ -108,11 +110,18 @@ void VOLtest(void)
         Serial.print("LOOVEE: ");
         Serial.println(tmp);
         Serial.println();
+        volY_n_t[i] = tmp;
+        
     }
     //30v test
     PORTA=0x80;
     delay(200);
-    compare(30);
+    float volY_n_t[7] = compare(30);
+    volY_n_t[7] *= 1000.0;
+    Serial.print("LOOVEE: ");
+    Serial.println(volY_n_t[7]);
+    Serial.println();
+    
     ///////////////////
     //Reverse TEST
 
@@ -127,13 +136,43 @@ void VOLtest(void)
     {
         PORTC=portc[n];
         delay(200);
-        compare(v[n]);
+
+        float tmp = compare(v[n]);
+        if(n>0)tmp *= 1000.0;
+        Serial.print("LOOVEE: ");
+        Serial.println(tmp);
+        Serial.println();
+        volY_t[i] = tmp;
+
     }
     //30v test
     PORTA=0x80;
     delay(200);
-    compare(30);
-
+    float volY_t[7] = compare(30);
+    volY_t[7] *= 1000.0;
+    Serial.print("LOOVEE: ");
+    Serial.println(volY_t[7]);
+    Serial.println();
+    
+    Serial.println("***************dta vol************")
+    
+    Serial.print("INPUT:\t")
+    for(int i = 0; i<8; i++)
+    {
+        Serial.print(volX_t[i]);Serial.print('\t');
+    }
+    Serial.print("\r\n volY_t:\t");
+    for(int i = 0; i<8; i++)
+    {
+        Serial.print(volY_t[i]);Serial.print('\t');
+    }
+    Serial.print("\r\n volY_n_t:\t");
+    for(int i = 0; i<8; i++)
+    {
+        Serial.print(volY_n_t[i]);Serial.print('\t');
+    }
+    Serial.println("\r\n******************************");
+    
 }
 
 
