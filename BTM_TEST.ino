@@ -110,13 +110,13 @@ void VOLtest(void)
         Serial.print("LOOVEE: ");
         Serial.println(tmp);
         Serial.println();
-        volY_n_t[i] = tmp;
+        volY_n_t[n] = tmp;
         
     }
     //30v test
     PORTA=0x80;
     delay(200);
-    float volY_n_t[7] = compare(30);
+    volY_n_t[7] = compare(30);
     volY_n_t[7] *= 1000.0;
     Serial.print("LOOVEE: ");
     Serial.println(volY_n_t[7]);
@@ -142,21 +142,21 @@ void VOLtest(void)
         Serial.print("LOOVEE: ");
         Serial.println(tmp);
         Serial.println();
-        volY_t[i] = tmp;
+        volY_t[n] = tmp;
 
     }
     //30v test
     PORTA=0x80;
     delay(200);
-    float volY_t[7] = compare(30);
+    volY_t[7] = compare(30);
     volY_t[7] *= 1000.0;
     Serial.print("LOOVEE: ");
     Serial.println(volY_t[7]);
     Serial.println();
     
-    Serial.println("***************dta vol************")
+    Serial.println("***************dta vol************");
     
-    Serial.print("INPUT:\t")
+    Serial.print("INPUT:\t");
     for(int i = 0; i<8; i++)
     {
         Serial.print(volX_t[i]);Serial.print('\t');
