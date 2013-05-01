@@ -46,6 +46,8 @@ private:
     unsigned char sendVolY();
     unsigned char sendVolY_n();
     
+    unsigned char checkBTMOK();
+    
 public:
 
     unsigned char setVolX(int *prt);

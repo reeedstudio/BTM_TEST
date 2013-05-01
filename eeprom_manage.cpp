@@ -198,7 +198,59 @@ unsigned char eeprom_manage::sendDtaI2c(int addrs, int len)
     Wire.endTransmission();
     
     delay(50);
+    
+    // wait for ok
+    Serial.println("wait for ok from BTM:");
+    Wire.requestFrom(5, 2);                         // request 6 bytes from slave device #2
+    delay(20);
+    
+    
+    
   
+}
+
+/*********************************************************************************************************
+** Function name: sendDtaI2c
+** Descriptions:  send eeprom data to i2c, 
+*********************************************************************************************************/
+unsigned char eeprom_manage::checkBTMOK()
+{
+    char a,b;
+    int tout = 0;
+    while(1)
+    {
+        
+        if(Wire.available())
+        {
+            a = Wire.read();
+            Serial.write(a);
+            if('O' == a)
+            {
+                // Wait for next character K. available() is required in some cases, as K is not immediately available.
+                while(Wire.available())
+                {
+                    b = Wire.read();
+                    Serial.write(a);
+                    break;
+                }
+                
+                if('K' == b)
+                {
+                    break;
+                }
+            }
+        }
+        delay(1);
+        tout++;
+        if(tout == 3000)
+        {
+            Serial.println("time out");
+            return 0;
+        }
+    }
+    
+    Serial.println("\r\nget OK\r\n");
+    return 1;
 }
 
 /*********************************************************************************************************
