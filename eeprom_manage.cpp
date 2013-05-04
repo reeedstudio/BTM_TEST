@@ -54,7 +54,8 @@ unsigned char eeprom_manage::init()
     volX[7] = VALVOL7;
     
     Serial.println("begin to test I2C");
-    testI2C();
+    if(testI2C())Serial.println("I2C ok");
+    else Serial.println("I2C no ok");
     
     return 1;
 
@@ -233,7 +234,7 @@ unsigned char eeprom_manage::checkBTMOK()
                 while(Wire.available())
                 {
                     b = Wire.read();
-                    Serial.write(a);
+                    Serial.write(b);
                     break;
                 }
                 
@@ -344,8 +345,22 @@ unsigned char eeprom_manage::setVolY_n(float *ptr)
 *********************************************************************************************************/
 unsigned char eeprom_manage::testI2C()
 {
-    Wire.requestFrom(4, 5);
-    checkBTMOK();
+    Wire.requestFrom(5, 2);
+    //checkBTMOK();
+    //  delay(1);
+    char tmp[2];
+    unsigned char len=0;
+    
+      while(Wire.available())    // slave may send less than requested
+      { 
+        char c = Wire.read(); // receive a byte as character
+        Serial.print(c);         // print the character
+        tmp[len++] = c;
+      }
+      
+      if(len >=2 && tmp[0] == 'O' && tmp[1] == 'K')return 1;
+      
+      return 0;
 }
 eeprom_manage  EEPM;
 /*********************************************************************************************************

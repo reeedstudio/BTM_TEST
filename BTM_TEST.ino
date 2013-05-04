@@ -32,6 +32,8 @@ void setup()
     delay(1000);
     
     EEPM.init();
+    
+    delay(100);
 
 }
 
