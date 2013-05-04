@@ -35,6 +35,7 @@ unsigned char eeprom_manage::init()
 {
 
     
+    
     for(int i=0; i<512; i++)
     {
         EEPROM.write(i, 0xff);
@@ -55,8 +56,14 @@ unsigned char eeprom_manage::init()
     
     Serial.println("begin to test I2C");
     if(testI2C())Serial.println("I2C ok");
-    else Serial.println("I2C no ok");
+    else 
+    {
+        Serial.println("I2C no ok");
+        Serial.println("please try again!!");
+        while(1);
+    }
     
+    sendClear();
     return 1;
 
 }
@@ -207,10 +214,27 @@ unsigned char eeprom_manage::sendDtaI2c(int addrs, int len)
     Serial.println("wait for ok from BTM:");
     Wire.requestFrom(5, 2);                         // request 6 bytes from slave device #2
     delay(20);
-    
-    
-    
+}
+
+/*********************************************************************************************************
+** Function name: sendClear
+** Descriptions:  send cmd to clear eeprom of btm 
+*********************************************************************************************************/
+unsigned char eeprom_manage::sendClear()
+{
   
+    Wire.beginTransmission(5);                      // begin i2c
+    Wire.write(START1);                             // send start
+    Wire.write(START2);
+    for(int i = 0; i<3; i++)
+    {
+        Wire.write(0x55);
+    }
+    Wire.write(END1);                               // send end
+    Wire.write(END2);
+    Wire.endTransmission();
+    
+    delay(50);
 }
 
 /*********************************************************************************************************
