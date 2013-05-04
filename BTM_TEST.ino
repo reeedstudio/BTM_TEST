@@ -17,8 +17,6 @@ int volX_t[8]       = {50, 1200, 1300, 3700, 3800, 13400, 13500, 30000};
 float volY_t[8]     = {0, 0, 0, 0, 0, 0, 0, 0};
 float volY_n_t[8]   = {0, 0, 0, 0, 0, 0, 0, 0};
 
-
-
 unsigned char dsb[7];
 unsigned char drb[11];
 bool getBtDta               = false;

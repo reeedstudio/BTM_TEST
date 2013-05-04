@@ -53,6 +53,7 @@ public:
     unsigned char setVolX(int *prt);
     unsigned char setVolY(float *ptr);
     unsigned char setVolY_n(float *ptr);
+    unsigned char testI2C();
     
     unsigned char init();
     unsigned char Adjust();

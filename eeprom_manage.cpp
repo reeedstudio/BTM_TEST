@@ -53,7 +53,10 @@ unsigned char eeprom_manage::init()
     volX[6] = VALVOL6;
     volX[7] = VALVOL7;
     
-    return 0;
+    Serial.println("begin to test I2C");
+    testI2C();
+    
+    return 1;
 
 }
 
@@ -249,7 +252,7 @@ unsigned char eeprom_manage::checkBTMOK()
         }
     }
     
-    Serial.println("\r\nget OK\r\n");
+    Serial.println("\r\nget OK from i2c\r\n");
     return 1;
 }
 
@@ -334,6 +337,16 @@ unsigned char eeprom_manage::setVolY_n(float *ptr)
     }
 }
 
+
+/*********************************************************************************************************
+** Function name: testI2C
+** Descriptions:  if i2c ok
+*********************************************************************************************************/
+unsigned char eeprom_manage::testI2C()
+{
+    Wire.requestFrom(4, 5);
+    checkBTMOK();
+}
 eeprom_manage  EEPM;
 /*********************************************************************************************************
   END FILE
