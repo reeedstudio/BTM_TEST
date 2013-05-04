@@ -59,8 +59,18 @@ unsigned char eeprom_manage::init()
     else 
     {
         Serial.println("I2C no ok");
-        Serial.println("please try again!!");
-        while(1);
+        Serial.println("again!!");
+        while(1)
+        {
+            delay(500);
+            if(testI2C())
+            {
+                Serial.println("I2C ok");
+                break;
+            }
+            else Serial.println("I2C no ok, try again");
+            delay(1000);
+        }
     }
     
     sendClear();
@@ -372,7 +382,7 @@ unsigned char eeprom_manage::testI2C()
     Wire.requestFrom(5, 2);
     //checkBTMOK();
     //  delay(1);
-    char tmp[2];
+    char tmp[10];
     unsigned char len=0;
     
       while(Wire.available())    // slave may send less than requested
@@ -380,6 +390,8 @@ unsigned char eeprom_manage::testI2C()
         char c = Wire.read(); // receive a byte as character
         Serial.print(c);         // print the character
         tmp[len++] = c;
+        
+        if(len > 8)len = 0;
       }
       
       if(len >=2 && tmp[0] == 'O' && tmp[1] == 'K')return 1;
